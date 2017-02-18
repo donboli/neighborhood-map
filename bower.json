@@ -1,0 +1,21 @@
+{
+  "name": "neighborhood-map",
+  "authors": [
+    "Juan Becker <wolli.becker@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "knockout": "^3.4.1"
+  }
+}
