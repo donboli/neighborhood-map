@@ -2,7 +2,8 @@
 <html>
 <head>
   <title>Neighborhood Map</title>
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <!-- Header -->
@@ -30,10 +31,21 @@
     </div>
   </nav>
 
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12 nopadding">
+        <div id="map"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- Footer -->
   <script src="bower_components/jquery/dist/jquery.js"></script>
   <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
   <script src="bower_components/knockout/dist/knockout.js"></script>
-  <script src="app.js"></script>
+  <script src="js/app.js"></script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNuTFOEi29eQHK8Z7EvZf4HxbyJ_vqROQ&callback=initMap">
+  </script>
 </body>
 </html>
