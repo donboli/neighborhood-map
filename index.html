@@ -26,18 +26,22 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <form class="navbar-form navbar-left">
           <div class="row">
-            <div class="col-xs-10">
-              <input type="text" class="form-control" placeholder="Type in some place">
+            <div class="col-xs-12">
+              <input data-bind="textInput: filter" type="text" class="form-control" placeholder="Type in some place">
             </div>
-            <div class="col-xs-2">
+            <!-- <div class="col-xs-2">
               <button type="submit" class="btn btn-default">Filter</button>
-            </div>
+            </div> -->
           </div>
         </form>
-        <h2><small>Places</small></h2>
-        <ul data-bind="foreach: places">
-          <li data-bind="text: name"></li>
-        </ul>
+        <div class="row">
+          <div class="col-xs-12">
+            <h2><small>Places</small></h2>
+            <ul data-bind="foreach: filteredPlaces">
+              <li data-bind="text: name"></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
