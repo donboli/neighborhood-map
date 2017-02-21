@@ -22,8 +22,15 @@ function initMap() {
     currentMarkers: [],
 
     refreshMap: function(places) {
+      this.removeAllMarkers();
       this.renderMarkers(places);
       this.focusMap(this.currentMarkers);
+    },
+
+    removeAllMarkers: function() {
+      this.currentMarkers.forEach(function(marker) {
+        marker.setMap(null);
+      });
     },
 
     focusMap: function(markers) {
@@ -41,7 +48,7 @@ function initMap() {
 
       for (var i = 0; i < places.length; i++) {
         marker = new google.maps.Marker({
-          position: places[i].position,
+          position: places[i].geometry.location,
           title: places[i].title,
           animation: google.maps.Animation.DROP,
           id: i
