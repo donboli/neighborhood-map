@@ -22,7 +22,7 @@ $(document).ready(function() {
       self.filteredPlaces = ko.observableArray(self.places());
 
       self.filterPlaces = function() {
-        var filterValue = new RegExp(self.filter(), "g");
+        var filterValue = new RegExp(self.filter(), "i");
 
         self.filteredPlaces(self.places().filter(function(place) {
           return filterValue.test(place.name);
