@@ -18,8 +18,14 @@ function initMap() {
     });
   }
 
+  /*
+    This is a component to communicate with the map.
+    In order to separate the map from other parts of the app, it's created
+    within the initMap function's scope. This way it won't interfere with
+    other parts of the app and cleanly separate the concerns.
+  */
   var mapComponent = {
-    currentMarkers: [],
+    currentMarkers: [], // Holds the markers currently displayed on the map.
 
     refreshMap: function(places) {
       this.removeAllMarkers();
@@ -27,12 +33,14 @@ function initMap() {
       this.focusMap(this.currentMarkers);
     },
 
+    // Removes all current markers from the map.
     removeAllMarkers: function() {
       this.currentMarkers.forEach(function(marker) {
         marker.setMap(null);
       });
     },
 
+    // Focuses the map on the markers provided as parameters.
     focusMap: function(markers) {
       var bounds = new google.maps.LatLngBounds();
 
@@ -43,6 +51,7 @@ function initMap() {
       map.fitBounds(bounds);
     },
 
+    // Creates markers from an array of places and renders them on the map.
     renderMarkers: function(places) {
       var marker;
 
