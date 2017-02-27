@@ -30,6 +30,10 @@ $(document).ready(function() {
 
         window.mapComponent.refreshMap(self.filteredPlaces());
       }
+
+      $(document).ready(function() {
+        window.mapComponent.refreshMap(self.filteredPlaces());
+      });
     };
 
     ko.applyBindings(placesViewModel);
