@@ -9,6 +9,7 @@ function initMap() {
   */
   var mapComponent = {
     currentMarkers: [], // Holds the markers currently displayed on the map.
+    infoWindow: new google.maps.InfoWindow(),
 
     refreshMap: function(places) {
       this.removeAllMarkers();
@@ -29,7 +30,7 @@ function initMap() {
 
       markers.forEach(function(marker) {
         bounds.extend(marker.position);
-      })
+      });
 
       map.fitBounds(bounds);
     },
@@ -37,6 +38,7 @@ function initMap() {
     // Creates markers from an array of places and renders them on the map.
     renderMarkers: function(places) {
       var marker;
+      var self = this;
 
       for (var i = 0; i < places.length; i++) {
         marker = new google.maps.Marker({
@@ -49,6 +51,17 @@ function initMap() {
         this.currentMarkers.push(marker);
 
         marker.setMap(map);
+
+        marker.addListener('click', function() {
+          self.populateInfoWindow(this, self.infoWindow);
+        });
+      }
+    },
+
+    populateInfoWindow: function(marker, infowindow) {
+      if (infowindow.marker != marker) {
+        infowindow.setContent('<div>' + marker.title + '</div>');
+        infowindow.open(map, marker);
       }
     }
   };
