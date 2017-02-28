@@ -63,6 +63,19 @@ function initMap() {
         infowindow.setContent('<div>' + marker.title + '</div>');
         infowindow.open(map, marker);
       }
+
+      $.getJSON("/yelp-search.json", function(data) {
+        if(data.businesses.length > 0) {
+          var business = data.businesses[0]
+          infowindow.setContent(
+            "<div>" + business.name + "</div>" +
+            "<div>phone: " + business.phone + "</div>" +
+            "<img src='" + business.image_url + "' />"
+          );
+        } else {
+          infowindow.setContent("No information available");
+        }
+      });
     }
   };
 
