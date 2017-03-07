@@ -9,7 +9,6 @@ function initMap() {
   */
   var mapComponent = {
     currentMarkers: [], // Holds the markers currently displayed on the map.
-    infoWindow: new google.maps.InfoWindow(),
 
     refreshMap: function(places) {
       this.removeAllMarkers();
@@ -53,6 +52,9 @@ function initMap() {
         marker.setMap(map);
 
         marker.addListener('click', function() {
+          if(!self.infoWindow) {
+            self.infoWindow = new google.maps.InfoWindow();
+          }
           self.populateInfoWindow(this, self.infoWindow);
         });
       }
@@ -60,22 +62,35 @@ function initMap() {
 
     populateInfoWindow: function(marker, infowindow) {
       if (infowindow.marker != marker) {
-        infowindow.setContent('<div>' + marker.title + '</div>');
-        infowindow.open(map, marker);
+        $.ajax({
+          url: 'https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro=&explaintext=',
+          jsonp: 'callback',
+          data: $.param({
+            titles: marker.title,
+            format: 'json'
+          }),
+          dataType: 'jsonp',
+          type: 'POST',
+          headers: { 'Api-User-Agent': 'Example/1.0' },
+          success: function(data) {
+            if (data.query) {
+              var pages = data.query.pages;
+              for(var property in pages) {
+                if(pages.hasOwnProperty(property)) {
+                  infowindow.setContent(
+                    '<div>' + pages[property].title + '</div>' +
+                    '<p>' + pages[property].extract + '</p>'
+                  );
+                  infowindow.open(map, marker);
+                }
+              }
+            } else {
+              infowindow.setContent('<p>No information found</p>');
+              infowindow.open(map, marker);
+            }
+          }
+        });
       }
-
-      $.getJSON("/yelp-search.json", function(data) {
-        if(data.businesses.length > 0) {
-          var business = data.businesses[0]
-          infowindow.setContent(
-            "<div>" + business.name + "</div>" +
-            "<div>phone: " + business.phone + "</div>" +
-            "<img src='" + business.image_url + "' />"
-          );
-        } else {
-          infowindow.setContent("No information available");
-        }
-      });
     }
   };
 
