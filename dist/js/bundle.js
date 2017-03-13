@@ -63,14 +63,14 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var apis = __webpack_require__(3);
+var apis = __webpack_require__(2);
 
 /*
   This is a component to communicate with the map.
@@ -6101,6 +6101,29 @@ ko.exportSymbol('nativeTemplateEngine', ko.nativeTemplateEngine);
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports) {
+
+var apis = {
+  callWikipedia: function(text, callback) {
+    $.ajax({
+      url: 'https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro=&explaintext=',
+      jsonp: 'callback',
+      data: $.param({
+        titles: text,
+        format: 'json'
+      }),
+      dataType: 'jsonp',
+      type: 'POST',
+      headers: { 'Api-User-Agent': 'Example/1.0' },
+      success: callback
+    });
+  }
+};
+
+module.exports = apis;
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var mapComponent = __webpack_require__(0);
@@ -6133,29 +6156,6 @@ $(document).ready(function() {
     ko.applyBindings(placesViewModel);
   });
 });
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-var apis = {
-  callWikipedia: function(text, callback) {
-    $.ajax({
-      url: 'https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro=&explaintext=',
-      jsonp: 'callback',
-      data: $.param({
-        titles: text,
-        format: 'json'
-      }),
-      dataType: 'jsonp',
-      type: 'POST',
-      headers: { 'Api-User-Agent': 'Example/1.0' },
-      success: callback
-    });
-  }
-};
-
-module.exports = apis;
 
 /***/ })
 /******/ ]);
