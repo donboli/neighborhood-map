@@ -1,0 +1,25 @@
+{
+  "name": "neighborhood-map",
+  "version": "1.0.0",
+  "description": "This is a single-page application to find interesting places in an area.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/donboli/neighborhood-map.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/donboli/neighborhood-map/issues"
+  },
+  "homepage": "https://github.com/donboli/neighborhood-map#readme",
+  "devDependencies": {
+    "webpack": "^2.2.1"
+  },
+  "dependencies": {
+    "knockout": "^3.4.2"
+  }
+}

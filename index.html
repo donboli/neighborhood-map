@@ -57,9 +57,12 @@
   <!-- Footer -->
   <script src="bower_components/jquery/dist/jquery.js"></script>
   <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-  <script src="bower_components/knockout/dist/knockout.js"></script>
-  <script src="js/map.js"></script>
-  <script src="js/app.js"></script>
+  <script>
+    function initMap() {
+      window.map = new google.maps.Map(document.getElementById('map'));
+    }
+  </script>
+  <script src="dist/js/bundle.js"></script>
   <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNuTFOEi29eQHK8Z7EvZf4HxbyJ_vqROQ&callback=initMap">
   </script>
