@@ -1,3 +1,5 @@
+var apis = require('./apis');
+
 /*
   This is a component to communicate with the map.
   In order to separate the map from other parts of the app, it's created
@@ -59,32 +61,21 @@ var mapComponent = {
 
   populateInfoWindow: function(marker, infowindow) {
     if (infowindow.marker != marker) {
-      $.ajax({
-        url: 'https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro=&explaintext=',
-        jsonp: 'callback',
-        data: $.param({
-          titles: marker.title,
-          format: 'json'
-        }),
-        dataType: 'jsonp',
-        type: 'POST',
-        headers: { 'Api-User-Agent': 'Example/1.0' },
-        success: function(data) {
-          if (data.query) {
-            var pages = data.query.pages;
-            for(var property in pages) {
-              if(pages.hasOwnProperty(property)) {
-                infowindow.setContent(
-                  '<div>' + pages[property].title + '</div>' +
-                  '<p>' + pages[property].extract + '</p>'
-                );
-                infowindow.open(map, marker);
-              }
+      apis.callWikipedia(marker.title, function(data) {
+        if (data.query) {
+          var pages = data.query.pages;
+          for(var property in pages) {
+            if(pages.hasOwnProperty(property)) {
+              infowindow.setContent(
+                '<div>' + pages[property].title + '</div>' +
+                '<p>' + pages[property].extract + '</p>'
+              );
+              infowindow.open(map, marker);
             }
-          } else {
-            infowindow.setContent('<p>No information found</p>');
-            infowindow.open(map, marker);
           }
+        } else {
+          infowindow.setContent('<p>No information found</p>');
+          infowindow.open(map, marker);
         }
       });
     }

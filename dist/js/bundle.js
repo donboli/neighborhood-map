@@ -68,7 +68,9 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+var apis = __webpack_require__(3);
 
 /*
   This is a component to communicate with the map.
@@ -131,32 +133,21 @@ var mapComponent = {
 
   populateInfoWindow: function(marker, infowindow) {
     if (infowindow.marker != marker) {
-      $.ajax({
-        url: 'https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro=&explaintext=',
-        jsonp: 'callback',
-        data: $.param({
-          titles: marker.title,
-          format: 'json'
-        }),
-        dataType: 'jsonp',
-        type: 'POST',
-        headers: { 'Api-User-Agent': 'Example/1.0' },
-        success: function(data) {
-          if (data.query) {
-            var pages = data.query.pages;
-            for(var property in pages) {
-              if(pages.hasOwnProperty(property)) {
-                infowindow.setContent(
-                  '<div>' + pages[property].title + '</div>' +
-                  '<p>' + pages[property].extract + '</p>'
-                );
-                infowindow.open(map, marker);
-              }
+      apis.callWikipedia(marker.title, function(data) {
+        if (data.query) {
+          var pages = data.query.pages;
+          for(var property in pages) {
+            if(pages.hasOwnProperty(property)) {
+              infowindow.setContent(
+                '<div>' + pages[property].title + '</div>' +
+                '<p>' + pages[property].extract + '</p>'
+              );
+              infowindow.open(map, marker);
             }
-          } else {
-            infowindow.setContent('<p>No information found</p>');
-            infowindow.open(map, marker);
           }
+        } else {
+          infowindow.setContent('<p>No information found</p>');
+          infowindow.open(map, marker);
         }
       });
     }
@@ -6142,6 +6133,29 @@ $(document).ready(function() {
     ko.applyBindings(placesViewModel);
   });
 });
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+var apis = {
+  callWikipedia: function(text, callback) {
+    $.ajax({
+      url: 'https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro=&explaintext=',
+      jsonp: 'callback',
+      data: $.param({
+        titles: text,
+        format: 'json'
+      }),
+      dataType: 'jsonp',
+      type: 'POST',
+      headers: { 'Api-User-Agent': 'Example/1.0' },
+      success: callback
+    });
+  }
+};
+
+module.exports = apis;
 
 /***/ })
 /******/ ]);
