@@ -113,7 +113,7 @@ var mapComponent = {
     for (var i = 0; i < places.length; i++) {
       marker = new google.maps.Marker({
         position: places[i].geometry.location,
-        title: places[i].title,
+        title: places[i].name,
         animation: google.maps.Animation.DROP,
         id: i
       });
@@ -146,7 +146,23 @@ var mapComponent = {
             }
           }
         } else {
-          infowindow.setContent('<p>No information found</p>');
+          infowindow.setContent('<p>No Wikpedia article found</p>');
+          infowindow.open(map, marker);
+        }
+      });
+
+      apis.callYelp(marker.title, map.getBounds().toJSON(), function(data) {
+        var business = JSON.parse(data.custom).businesses[0];
+        if (business != undefined) {
+          infowindow.setContent(
+            '<a href=\'' + business.url + '\'>' + business.name + '</a><br/>' +
+            '<span>Phone: ' + business.display_phone + '</span><br/>' +
+            '<span>Description: ' + business.snippet_text + '</span><br/>' +
+            '<img src=\'' + business.image_url + '\'/>'
+          );
+          infowindow.open(map, marker);
+        } else {
+          infowindow.setContent('<p>No Yelp information found</p>');
           infowindow.open(map, marker);
         }
       });
@@ -6115,6 +6131,18 @@ var apis = {
       dataType: 'jsonp',
       type: 'POST',
       headers: { 'Api-User-Agent': 'Example/1.0' },
+      success: callback
+    });
+  },
+
+  callYelp: function(text, bounds, callback) {
+    $.ajax({
+      url: '/yelp',
+      data: $.param({
+        bounds: bounds.south + ',' + bounds.west + '|' + bounds.north + ',' + bounds.east,
+        term: text
+      }),
+      format: 'json',
       success: callback
     });
   }

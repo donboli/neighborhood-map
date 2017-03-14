@@ -19,18 +19,19 @@ module.exports = {
     setup(app){
       app.get('/yelp', function(req, response) {
         var oauth = new OAuth.OAuth(
-          config.token_secret,
-          config.token,
+          null,
+          null,
           config.consumer_key,
           config.consumer_secret,
-          '1.0A',
+          '1.0',
           null,
           'HMAC-SHA1'
         );
         oauth.get(
-          'https://api.twitter.com/1.1/trends/place.json?id=23424977',
-          'your user token for this app', //test user token
-          'your user secret for this app', //test user secret
+          'https://api.yelp.com/v2/search?term=' + req.query.term +
+          '&bounds=' + req.query.bounds,
+          config.token,
+          config.token_secret,
           function (e, data, res){
             if (e) console.error(e);
             // console.log(require('util').inspect(data));
