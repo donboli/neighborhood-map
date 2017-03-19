@@ -131,40 +131,60 @@ var mapComponent = {
     }
   },
 
-  populateInfoWindow: function(marker, infowindow) {
-    if (infowindow.marker != marker) {
-      apis.callWikipedia(marker.title, function(data) {
-        if (data.query) {
-          var pages = data.query.pages;
-          for(var property in pages) {
-            if(pages.hasOwnProperty(property)) {
-              infowindow.setContent(
-                '<div>' + pages[property].title + '</div>' +
-                '<p>' + pages[property].extract + '</p>'
-              );
-              infowindow.open(map, marker);
-            }
-          }
-        } else {
-          infowindow.setContent('<p>No Wikpedia article found</p>');
-          infowindow.open(map, marker);
-        }
-      });
+  formatYelpInfo: function(data) {
+    var business = JSON.parse(data[0].custom).businesses[0];
 
-      apis.callYelp(marker.title, map.getBounds().toJSON(), function(data) {
-        var business = JSON.parse(data.custom).businesses[0];
-        if (business != undefined) {
-          infowindow.setContent(
-            '<a href=\'' + business.url + '\'>' + business.name + '</a><br/>' +
-            '<span>Phone: ' + business.display_phone + '</span><br/>' +
-            '<span>Description: ' + business.snippet_text + '</span><br/>' +
-            '<img src=\'' + business.image_url + '\'/>'
+    if (business != undefined) {
+      return (
+        '<a href=\'' + business.url + '\'>' + business.name + '</a><br/>' +
+        '<span>Phone: ' + business.display_phone + '</span><br/>' +
+        '<span>Description: ' + business.snippet_text + '</span><br/>' +
+        '<img src=\'' + business.image_url + '\'/>'
+      );
+    } else {
+      return '<p>No Yelp information found</p>';
+    }
+  },
+
+  formatWikipediaInfo: function(data) {
+    if (data.query) {
+      var pages = data.query.pages;
+      for(var property in pages) {
+        if(pages.hasOwnProperty(property)) {
+          return (
+            '<div>' + pages[property].title + '</div>' +
+            '<p>' + pages[property].extract + '</p>'
           );
-          infowindow.open(map, marker);
-        } else {
-          infowindow.setContent('<p>No Yelp information found</p>');
-          infowindow.open(map, marker);
         }
+      }
+    } else {
+      return '<p>No Wikpedia article found</p>';
+    }
+  },
+
+  populateInfoWindow: function(marker, infowindow) {
+    var self = this;
+
+    if (infowindow.marker != marker) {
+      var wikipediaCall = apis.callWikipedia(marker.title);
+      var yelpCall = apis.callYelp(marker.title, map.getBounds().toJSON());
+
+      $.when(wikipediaCall, yelpCall)
+      .done(function(wikipediaData, yelpData) {
+        var content = '';
+
+        [
+          self.formatWikipediaInfo(wikipediaData),
+          self.formatYelpInfo(yelpData)
+        ].forEach(function(text) {
+          content += text;
+        });
+
+        infowindow.setContent(content);
+        infowindow.open(map, marker);
+      })
+      .fail(function(wikipediaError, yelpError) {
+        console.dir("wikipediaError: " + wikipediaError, "yelpError: " + yelpError);
       });
     }
   }
@@ -6120,8 +6140,8 @@ ko.exportSymbol('nativeTemplateEngine', ko.nativeTemplateEngine);
 /***/ (function(module, exports) {
 
 var apis = {
-  callWikipedia: function(text, callback) {
-    $.ajax({
+  callWikipedia: function(text) {
+    return $.ajax({
       url: 'https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro=&explaintext=',
       jsonp: 'callback',
       data: $.param({
@@ -6130,20 +6150,18 @@ var apis = {
       }),
       dataType: 'jsonp',
       type: 'POST',
-      headers: { 'Api-User-Agent': 'Example/1.0' },
-      success: callback
+      headers: { 'Api-User-Agent': 'Example/1.0' }
     });
   },
 
-  callYelp: function(text, bounds, callback) {
-    $.ajax({
+  callYelp: function(text, bounds) {
+    return $.ajax({
       url: '/yelp',
       data: $.param({
         bounds: bounds.south + ',' + bounds.west + '|' + bounds.north + ',' + bounds.east,
         term: text
       }),
-      format: 'json',
-      success: callback
+      format: 'json'
     });
   }
 };

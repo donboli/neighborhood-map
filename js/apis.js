@@ -1,6 +1,6 @@
 var apis = {
-  callWikipedia: function(text, callback) {
-    $.ajax({
+  callWikipedia: function(text) {
+    return $.ajax({
       url: 'https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro=&explaintext=',
       jsonp: 'callback',
       data: $.param({
@@ -9,20 +9,18 @@ var apis = {
       }),
       dataType: 'jsonp',
       type: 'POST',
-      headers: { 'Api-User-Agent': 'Example/1.0' },
-      success: callback
+      headers: { 'Api-User-Agent': 'Example/1.0' }
     });
   },
 
-  callYelp: function(text, bounds, callback) {
-    $.ajax({
+  callYelp: function(text, bounds) {
+    return $.ajax({
       url: '/yelp',
       data: $.param({
         bounds: bounds.south + ',' + bounds.west + '|' + bounds.north + ',' + bounds.east,
         term: text
       }),
-      format: 'json',
-      success: callback
+      format: 'json'
     });
   }
 };
