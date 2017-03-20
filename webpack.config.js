@@ -30,6 +30,7 @@ module.exports = {
   watch: true,
   devServer: {
     contentBase: path.join(__dirname, "dist"),
+    compress: true,
     setup(app){
       app.get('/yelp', function(req, response) {
         var oauth = new OAuth.OAuth(
