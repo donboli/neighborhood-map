@@ -1,3 +1,5 @@
+var $ = require('jquery');
+
 var apis = {
   callWikipedia: function(text) {
     return $.ajax({

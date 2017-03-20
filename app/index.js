@@ -1,4 +1,8 @@
-var mapComponent = require('./map');
+require('./css/styles.css');
+require('./index.html');
+require('bootstrap');
+
+var mapComponent = require('./js/map');
 var ko = require('knockout');
 
 $(document).ready(function() {

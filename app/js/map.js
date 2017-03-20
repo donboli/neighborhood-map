@@ -1,4 +1,5 @@
 var apis = require('./apis');
+var $ = require('jquery');
 
 /*
   This is a component to communicate with the map.

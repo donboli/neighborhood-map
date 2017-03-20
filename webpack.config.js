@@ -4,18 +4,28 @@ var webpack = require('webpack');
 var config = require('./config');
 
 module.exports = {
-  entry: './js/index.js',
+  entry: './app/index.js',
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist/js')
+    path: path.resolve(__dirname, 'dist')
   },
-  // plugins: [
-  //   new webpack.LoaderOptionsPlugin({
-  //     debug: true
-  //   })
-  // ],
+  devtool: 'inline-source-map',
+  module: {
+    rules: [
+      { test: /\.css$/, use: [ 'style-loader', 'css-loader' ] },
+      { test: /\.(jpg|png|svg)$/, use: [ 'file-loader' ] },
+      { test: /\.html$/, use: [ { loader: 'html-loader', options: { minimize: true } } ] }
+    ]
+  },
+  plugins: [
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery",
+    })
+  ],
   watch: true,
   devServer: {
+    contentBase: path.join(__dirname, "dist"),
     setup(app){
       app.get('/yelp', function(req, response) {
         var oauth = new OAuth.OAuth(
