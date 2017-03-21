@@ -31,6 +31,7 @@
     "bootstrap": "^3.3.7",
     "jquery": "^3.2.1",
     "knockout": "^3.4.2",
-    "oauth": "^0.9.15"
+    "oauth": "^0.9.15",
+    "offcanvas-bootstrap": "^2.2.0"
   }
 }

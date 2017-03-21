@@ -12,19 +12,18 @@ module.exports = {
   devtool: 'inline-source-map',
   module: {
     rules: [
-      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, use: [ "file-loader" ] },
       { test: /\.(woff|woff2)$/, use: [ "url-loader" ] },
       { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, use: [ "url-loader" ] },
-      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, use: [ "url-loader" ] },
       { test: /\.css$/, use: [ 'style-loader', 'css-loader' ] },
       { test: /\.(jpg|png|svg)$/, use: [ 'file-loader' ] },
-      { test: /\.html$/, use: [ { loader: 'html-loader', options: { minimize: true } } ] }
+      { test: /\.(html|json)$/, use: [ 'file-loader?name=[name].[ext]' ] }
     ]
   },
   plugins: [
     new webpack.ProvidePlugin({
       $: "jquery",
       jQuery: "jquery",
+      "window.jQuery": "jquery"
     })
   ],
   watch: true,
