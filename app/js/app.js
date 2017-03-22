@@ -18,7 +18,11 @@ $(document).ready(function() {
         }, self));
 
         mapComponent.refreshMap(self.filteredPlaces());
-      }
+      };
+
+      self.selectMarker = function() {
+        mapComponent.selectMarker(this.id);
+      };
 
       $(document).ready(function() {
         mapComponent.refreshMap(self.filteredPlaces());

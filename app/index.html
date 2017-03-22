@@ -33,7 +33,7 @@
               No places found
             </div>
             <ul data-bind="foreach: filteredPlaces" class="list-group">
-              <li data-bind="text: name" class="list-group-item"></li>
+              <li data-bind="text: name, click: selectMarker" class="list-group-item filtered-place"></li>
             </ul>
           </div>
         </div>

@@ -34,6 +34,14 @@ var mapComponent = {
     map.fitBounds(bounds);
   },
 
+  selectMarker: function(id) {
+    var selectedMarker = this.currentMarkers.find(function(marker) {
+      return marker.id == id;
+    });
+
+    new google.maps.event.trigger(selectedMarker, 'click');
+  },
+
   // Creates markers from an array of places and renders them on the map.
   renderMarkers: function(places) {
     var marker;
@@ -44,7 +52,7 @@ var mapComponent = {
         position: places[i].geometry.location,
         title: places[i].name,
         animation: google.maps.Animation.DROP,
-        id: i
+        id: places[i].id
       });
 
       this.currentMarkers.push(marker);
@@ -52,10 +60,11 @@ var mapComponent = {
       marker.setMap(map);
 
       marker.addListener('click', function() {
+        self.bounceMarker(this);
+
         if(!self.infoWindow) {
           self.infoWindow = new google.maps.InfoWindow();
         }
-        self.bounceMarker(this);
         self.populateInfoWindow(this, self.infoWindow);
       });
     }
