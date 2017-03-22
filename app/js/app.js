@@ -31,4 +31,11 @@ $(document).ready(function() {
 
     ko.applyBindings(placesViewModel);
   });
+
+  // Focus on search field after opening off-canvas menu
+  $('.offcanvas-toggle').on('click', function() {
+    if($(this).hasClass('is-open')) {
+      $('.js-search-field').focus();
+    }
+  });
 });
