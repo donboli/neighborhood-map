@@ -55,6 +55,7 @@ var mapComponent = {
         if(!self.infoWindow) {
           self.infoWindow = new google.maps.InfoWindow();
         }
+        self.bounceMarker(this);
         self.populateInfoWindow(this, self.infoWindow);
       });
     }
@@ -91,6 +92,13 @@ var mapComponent = {
     } else {
       return '<p>No Wikpedia article found</p>';
     }
+  },
+
+  bounceMarker: function(marker) {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+    setTimeout(function() {
+      marker.setAnimation(null);
+    }, 750);
   },
 
   populateInfoWindow: function(marker, infowindow) {
