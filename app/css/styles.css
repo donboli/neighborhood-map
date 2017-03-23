@@ -12,6 +12,12 @@
   margin-bottom: 0;
 }
 
+.navbar-offcanvas {
+  height: 250px;
+  overflow-y: scroll;
+  resize: vertical;
+}
+
 .filtered-place:hover {
   font-weight: bold;
 }
