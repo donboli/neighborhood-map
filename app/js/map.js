@@ -76,7 +76,7 @@ var mapComponent = {
 
     if (business != undefined) {
       return (
-        '<a href=\'' + business.url + '\'>' + business.name + '</a><br/>' +
+        '<a target="_blank" href=\'' + business.url + '\'>' + business.name + '</a><br/>' +
         '<span>Phone: ' + business.display_phone + '</span><br/>' +
         '<span>Description: ' + business.snippet_text + '</span><br/>' +
         '<img src=\'' + business.image_url + '\'/>'
