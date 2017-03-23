@@ -134,7 +134,13 @@ var mapComponent = {
         infowindow.open(map, marker);
       })
       .fail(function(wikipediaError, yelpError) {
-        console.dir("wikipediaError: " + wikipediaError, "yelpError: " + yelpError);
+        if("error" == yelpError) {
+          console.log("Error: Couldn't load Yelp API");
+        }
+        if(wikipediaError.status == 404) {
+          console.log("Error: Couldn't load Wikipedia API");
+        }
+        alert('Connection failed. Please check your internet connection or retry later.');
       });
     }
   }
