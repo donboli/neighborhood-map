@@ -2,6 +2,7 @@ var path = require('path');
 var OAuth = require('oauth');
 var webpack = require('webpack');
 var config = require('./config');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -18,7 +19,13 @@ module.exports = {
       { test: /\.(woff|woff2)$/, use: [ "url-loader" ] },
       { test: /\.eot$/, use: [ "file-loader" ] },
       { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, use: [ "url-loader" ] },
-      { test: /\.css$/, use: [ 'style-loader', 'css-loader' ] },
+      {
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [ 'css-loader' ]
+        })
+      },
       { test: /\.(jpg|png|svg)$/, use: [ 'file-loader' ] },
       { test: /\.(html|json)$/, use: [ 'file-loader?name=[name].[ext]' ] }
     ]
@@ -31,7 +38,8 @@ module.exports = {
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor'
-    })
+    }),
+    new ExtractTextPlugin('styles.css')
   ],
   watch: true,
   devServer: {
