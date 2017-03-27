@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/donboli/neighborhood-map#readme",
   "devDependencies": {
+    "compression-webpack-plugin": "^0.3.2",
     "css-loader": "^0.27.3",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.10.1",

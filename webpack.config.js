@@ -4,6 +4,7 @@ var webpack = require('webpack');
 var config = require('./config');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+var CompressionPlugin = require("compression-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -41,7 +42,8 @@ module.exports = {
       name: 'vendor'
     }),
     new ExtractTextPlugin('styles.css'),
-    new UglifyJSPlugin()
+    new UglifyJSPlugin(),
+    new CompressionPlugin()
   ],
   watch: true,
   devServer: {
