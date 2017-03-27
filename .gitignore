@@ -1,4 +1,4 @@
 bower_components
 node_modules
 npm-debug.log
-config.js
+server/config.js
