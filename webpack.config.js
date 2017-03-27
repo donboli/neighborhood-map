@@ -4,9 +4,12 @@ var webpack = require('webpack');
 var config = require('./config');
 
 module.exports = {
-  entry: './app/index.js',
+  entry: {
+    main: './app/index.js',
+    vendor: ['jquery', 'bootstrap']
+  },
   output: {
-    filename: 'bundle.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, 'dist')
   },
   devtool: 'eval-source-map',
@@ -25,6 +28,9 @@ module.exports = {
       $: "jquery",
       jQuery: "jquery",
       "window.jQuery": "jquery"
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor'
     })
   ],
   watch: true,
