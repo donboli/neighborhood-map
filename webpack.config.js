@@ -3,6 +3,7 @@ var OAuth = require('oauth');
 var webpack = require('webpack');
 var config = require('./config');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -39,7 +40,8 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor'
     }),
-    new ExtractTextPlugin('styles.css')
+    new ExtractTextPlugin('styles.css'),
+    new UglifyJSPlugin()
   ],
   watch: true,
   devServer: {
