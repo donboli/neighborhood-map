@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "This is a single-page application to find interesting places in an area.",
   "main": "index.js",
+  "engines": {
+    "node": ">= 6.10.0"
+  },
   "scripts": {
     "build": "webpack",
     "start": "webpack-dev-server",
