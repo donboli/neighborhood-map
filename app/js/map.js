@@ -8,22 +8,54 @@ var $ = require('jquery');
   other parts of the app and cleanly separate the concerns.
 */
 var mapComponent = {
-  currentMarkers: [], // Holds the markers currently displayed on the map.
+  currentMarkers: [], // Holds the markers currently displayed on the map
+  markers: [], // Holds all created markers
 
+  // Create markers for provided places and place them on the map
+  init: function(places) {
+    var self = this;
+
+    for (var i = 0; i < places.length; i++) {
+      marker = new google.maps.Marker({
+        position: places[i].geometry.location,
+        title: places[i].name,
+        animation: google.maps.Animation.DROP,
+        id: places[i].id
+      });
+
+      self.markers.push(marker);
+      self.currentMarkers.push(marker);
+
+      marker.setMap(map);
+
+      marker.addListener('click', function() {
+        self.bounceMarker(this);
+
+        if(!self.infoWindow) {
+          self.infoWindow = new google.maps.InfoWindow();
+        }
+        self.populateInfoWindow(this, self.infoWindow);
+      });
+    }
+
+    self.refreshMap(places);
+  },
+
+  // Show only markers on the map corresponding to provided places
   refreshMap: function(places) {
     this.removeAllMarkers();
     this.renderMarkers(places);
     this.focusMap(this.currentMarkers);
   },
 
-  // Removes all current markers from the map.
+  // Removes all current markers from the map
   removeAllMarkers: function() {
     this.currentMarkers.forEach(function(marker) {
       marker.setMap(null);
     });
   },
 
-  // Focuses the map on the markers provided as parameters.
+  // Focuses the map on the markers provided as parameters
   focusMap: function(markers) {
     var bounds = new google.maps.LatLngBounds();
 
@@ -42,35 +74,21 @@ var mapComponent = {
     new google.maps.event.trigger(selectedMarker, 'click');
   },
 
-  // Creates markers from an array of places and renders them on the map.
+  // Creates markers from an array of places and renders them on the map
   renderMarkers: function(places) {
     var marker;
     var self = this;
 
-    for (var i = 0; i < places.length; i++) {
-      marker = new google.maps.Marker({
-        position: places[i].geometry.location,
-        title: places[i].name,
-        animation: google.maps.Animation.DROP,
-        id: places[i].id
+    places.forEach(function(place) {
+      marker = self.markers.find(function(marker) {
+        return marker.id == place.id;
       });
-
-      this.currentMarkers.push(marker);
 
       marker.setMap(map);
-
-      marker.addListener('click', function() {
-        self.bounceMarker(this);
-
-        if(!self.infoWindow) {
-          self.infoWindow = new google.maps.InfoWindow();
-        }
-        self.populateInfoWindow(this, self.infoWindow);
-      });
-    }
+    });
   },
 
-  // create Yelp info element
+  // Create Yelp info element
   formatYelpInfo: function(data) {
     var business = JSON.parse(data[0].custom).businesses[0];
 
@@ -86,7 +104,7 @@ var mapComponent = {
     }
   },
 
-  // create Wikipedia info element
+  // Create Wikipedia info element
   formatWikipediaInfo: function(data) {
     if (data.query) {
       var pages = data.query.pages;
@@ -114,7 +132,7 @@ var mapComponent = {
     var self = this;
 
     if (infowindow.marker != marker) {
-      // call Wikipedia and Yelp APIs.
+      // call Wikipedia and Yelp APIs
       var wikipediaCall = apis.callWikipedia(marker.title);
       var yelpCall = apis.callYelp(marker.title, map.getBounds().toJSON());
 
@@ -122,7 +140,7 @@ var mapComponent = {
       .done(function(wikipediaData, yelpData) {
         var content = '';
 
-        // get formatted content and concatenate it.
+        // get formatted content and concatenate it
         [
           self.formatWikipediaInfo(wikipediaData),
           self.formatYelpInfo(yelpData)

@@ -25,7 +25,7 @@ $(document).ready(function() {
       };
 
       $(document).ready(function() {
-        mapComponent.refreshMap(self.filteredPlaces());
+        mapComponent.init(self.places());
       });
     };
 
