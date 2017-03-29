@@ -57,17 +57,15 @@
     function initMap() {
       window.map = new google.maps.Map(document.getElementById('map'));
     }
-  </script>
-  <script async src="main.js"></script>
-  <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNuTFOEi29eQHK8Z7EvZf4HxbyJ_vqROQ&callback=initMap">
-  </script>
-  <script>
     setTimeout(function() {
       if(!window.google || !window.google.maps) {
         alert("Google Maps couldn't be loaded. Please try again later or contact the site administrator.");
       }
     }, 5000);
+  </script>
+  <script async src="main.js"></script>
+  <script async defer
+    src="https://madps.googleapis.com/maps/api/js?key=AIzaSyDNuTFOEi29eQHK8Z7EvZf4HxbyJ_vqROQ&callback=initMap">
   </script>
 </body>
 </html>
