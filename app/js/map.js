@@ -130,7 +130,7 @@ var mapComponent = {
     marker.setAnimation(google.maps.Animation.BOUNCE);
     setTimeout(function() {
       marker.setAnimation(null);
-    }, 750);
+    }, 700);
   },
 
   populateInfoWindow: function(marker, infowindow) {
