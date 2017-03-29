@@ -2,7 +2,8 @@ var mapComponent = require('./map');
 var ko = require('knockout');
 
 $(document).ready(function() {
-  $.getJSON("/places.json", function(data) {
+  $.getJSON("/places.json")
+  .done(function(data) {
     function placesViewModel() {
       var self = this;
 
@@ -30,6 +31,9 @@ $(document).ready(function() {
     };
 
     ko.applyBindings(placesViewModel);
+  })
+  .fail(function() {
+    alert("Couldn't load places. Please try again later or contact the site administrator.");
   });
 
   // Focus on search field after opening off-canvas menu
