@@ -38,6 +38,11 @@ var mapComponent = {
       });
     }
 
+    // Keep focus on the markers when resizing the window.
+    google.maps.event.addDomListener(window, 'resize', function() {
+      self.focusMap(self.currentMarkers);
+    });
+
     self.refreshMap(places);
   },
 
