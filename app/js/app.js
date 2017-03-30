@@ -25,6 +25,13 @@ $(document).ready(function() {
         mapComponent.selectMarker(this.id);
       };
 
+      // Focus on search field after opening off-canvas menu
+      self.toggleFocus = function(elem, event) {
+        if($(event.target).hasClass('is-open')) {
+          $('.js-search-field').focus();
+        }
+      };
+
       $(document).ready(function() {
         mapComponent.init(self.places());
       });
@@ -34,12 +41,5 @@ $(document).ready(function() {
   })
   .fail(function() {
     alert("Couldn't load places. Please try again later or contact the site administrator.");
-  });
-
-  // Focus on search field after opening off-canvas menu
-  $('.offcanvas-toggle').on('click', function() {
-    if($(this).hasClass('is-open')) {
-      $('.js-search-field').focus();
-    }
   });
 });
