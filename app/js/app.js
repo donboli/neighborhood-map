@@ -28,7 +28,7 @@ $(document).ready(function() {
       $(document).ready(function() {
         mapComponent.init(self.places());
       });
-    };
+    }
 
     ko.applyBindings(placesViewModel);
   })

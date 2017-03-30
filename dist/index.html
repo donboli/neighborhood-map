@@ -4,7 +4,6 @@
   <title>Neighborhood Map</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="styles.css">
-  <script src="vendor.js"></script>
 </head>
 <body>
   <!-- Header -->
@@ -53,14 +52,19 @@
   </div>
 
   <!-- Footer -->
+  <script src="vendor.js"></script>
+  <script src="main.js"></script>
   <script>
     function initMap() {
       window.map = new google.maps.Map(document.getElementById('map'));
     }
+    function handleGoogleMapsError(argument) {
+      alert("Google Maps couldn't be loaded. Please try again later or contact the site administrator.");
+    }
   </script>
-  <script async src="main.js"></script>
   <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNuTFOEi29eQHK8Z7EvZf4HxbyJ_vqROQ&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNuTFOEi29eQHK8Z7EvZf4HxbyJ_vqROQ&callback=initMap"
+    onerror="handleGoogleMapsError()">
   </script>
 </body>
 </html>

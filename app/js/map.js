@@ -15,6 +15,15 @@ var mapComponent = {
   init: function(places) {
     var self = this;
 
+    var bounceEventListener = function() {
+      self.bounceMarker(this);
+
+      if(!self.infoWindow) {
+        self.infoWindow = new google.maps.InfoWindow();
+      }
+      self.populateInfoWindow(this, self.infoWindow);
+    };
+
     for (var i = 0; i < places.length; i++) {
       marker = new google.maps.Marker({
         position: places[i].geometry.location,
@@ -28,14 +37,7 @@ var mapComponent = {
 
       marker.setMap(map);
 
-      marker.addListener('click', function() {
-        self.bounceMarker(this);
-
-        if(!self.infoWindow) {
-          self.infoWindow = new google.maps.InfoWindow();
-        }
-        self.populateInfoWindow(this, self.infoWindow);
-      });
+      marker.addListener('click', bounceEventListener);
     }
 
     // Keep focus on the markers when resizing the window.
@@ -97,7 +99,7 @@ var mapComponent = {
   formatYelpInfo: function(data) {
     var business = JSON.parse(data[0].custom).businesses[0];
 
-    if (business != undefined) {
+    if (business !== undefined) {
       return (
         '<a target="_blank" href=\'' + business.url + '\'>' + business.name + '</a><br/>' +
         '<span>Phone: ' + business.display_phone + '</span><br/>' +
